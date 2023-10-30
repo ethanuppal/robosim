@@ -7,3 +7,4 @@ Makefile
 robotsim
 cmake_install.cmake
 CMakeCache.txt
+docs_build

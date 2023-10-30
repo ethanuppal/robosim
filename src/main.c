@@ -1,23 +1,16 @@
 // Copyright (C) 2023 Ethan Uppal. All rights reserved.
 
-#include <stdio.h> // fprintf, stderr
-#include <stdlib.h> // malloc, realloc
-#include <stddef.h> // NULL
-#include <stdint.h> // uint32_t
-#include "MiniFB.h"
+#include <stddef.h>  // NULL
+#include <stdio.h>   // fprintf, stderr
+#include <stdlib.h>  // malloc, realloc
 
-#define BYTES_PER_PIXEL 4
+#include "MiniFB.h"
+#include "frame.h"
+#include "scene.h"
+
 #define WINDOW_TITLE "Robot Simulator"
 
-static struct {
-    uint32_t width;
-    uint32_t height;
-    uint32_t *buffer;
-} ctx = {
-    .width  = 800,
-    .height = 600,
-    .buffer = NULL
-};
+static struct frame ctx = {.width = 800, .height = 600, .buffer = NULL};
 
 // resize callback
 void resize(struct mfb_window* window, int width, int height) {
@@ -28,8 +21,8 @@ void resize(struct mfb_window* window, int width, int height) {
 
 int main() {
     // create window
-    struct mfb_window* window = mfb_open_ex(WINDOW_TITLE, ctx.width, ctx.height, 
-        WF_RESIZABLE);
+    struct mfb_window* window =
+        mfb_open_ex(WINDOW_TITLE, ctx.width, ctx.height, WF_RESIZABLE);
     if (!window) {
         fprintf(stderr, "Failed to open window\n");
         return 1;
@@ -39,19 +32,34 @@ int main() {
     // configure window
     mfb_set_resize_callback(window, resize);
 
+    // create the scene
+    struct scene* scene = scene_create();
+    if (!scene) {
+        fprintf(stderr, "Failed to create scene\n");
+        return 1;
+    }
+
+    // add stuff to scene
+    // scene_add_rect(scene, -25, -25, 50, 50);
+
     // main loop
     mfb_update_state state;
     do {
+        scene_draw(scene, &ctx, 0, 0, ctx.width, ctx.height);
+
         state = mfb_update_ex(window, ctx.buffer, ctx.width, ctx.height);
         if (state != STATE_OK) {
             break;
         }
     } while (mfb_wait_sync(window));
 
+    // get rid of scene
+    scene_destroy(scene);
+
     // handle exit state
     switch (state) {
         case STATE_EXIT:
-            return 0; // exit early on success
+            return 0;  // exit early on success
         case STATE_INVALID_WINDOW:
             fprintf(stderr, "Invalid window\n");
             break;

@@ -2,7 +2,11 @@
 
 cmake_minimum_required(VERSION 3.20)
 project(robotsim)
-add_executable(${PROJECT_NAME} src/main.c)
+
+add_executable(${PROJECT_NAME}
+    src/main.c
+    src/scene.c src/scene.h
+    src/frame.c src/frame.h)
 
 add_subdirectory(dependencies/minifb)
 

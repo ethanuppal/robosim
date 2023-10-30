@@ -1,0 +1,14 @@
+---
+BasedOnStyle: Google
+IndentWidth: 4
+Language: Cpp
+DerivePointerAlignment: false
+PointerAlignment: Left
+BreakStringLiterals: true
+ReflowComments: true
+ContinuationIndentWidth: 4
+ColumnLimit: 80
+AlignTrailingComments:
+    Kind: Always
+    OverEmptyLines: 2
+---

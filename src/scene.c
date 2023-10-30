@@ -50,8 +50,8 @@ static struct object* _scene_new_object(struct scene* scene) {
     // add new object to object array
     if (scene->object_count + 1 >= scene->object_capacity) {
         scene->object_capacity *= 2;
-        scene->objects = realloc(
-            scene->objects, sizeof(*scene->objects) * scene->object_capacity);
+        scene->objects = realloc(scene->objects,
+            sizeof(*scene->objects) * scene->object_capacity);
         if (!scene->objects) {
             return NULL;
         }
@@ -69,7 +69,7 @@ static struct object* _scene_new_object(struct scene* scene) {
 }
 
 struct object* scene_add_line(struct scene* scene, double x1, double y1,
-                              double x2, double y2) {
+    double x2, double y2) {
     struct object* line = _scene_new_object(scene);
     if (!line) {
         return NULL;
@@ -85,7 +85,7 @@ struct object* scene_add_line(struct scene* scene, double x1, double y1,
 }
 
 struct object* scene_add_rect(struct scene* scene, double x, double y, double w,
-                              double h) {
+    double h) {
     struct object* rect = _scene_new_object(scene);
     if (!rect) {
         return NULL;
@@ -101,7 +101,7 @@ struct object* scene_add_rect(struct scene* scene, double x, double y, double w,
 }
 
 struct object* scene_add_circle(struct scene* scene, double x, double y,
-                                double radius) {
+    double radius) {
     struct object* circle = _scene_new_object(scene);
     if (!circle) {
         return NULL;
@@ -152,7 +152,7 @@ static uint32_t _vb_trans(double x, double trans_x, double view_w) {
 #include <stdio.h>
 
 void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
-                double trans_y, double view_w, double view_h) {
+    double trans_y, double view_w, double view_h) {
     // clear the frame
     frame_draw_rect(frame, 0, 0, frame->width, frame->height, 0 /* black */);
 
@@ -190,7 +190,7 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
 
                 break;
             case OBJECT_TYPE_RECT: {
-                struct _object_rect* rect = &object->value.rect;
+                const struct _object_rect* rect = &object->value.rect;
 
                 // translate into view box frame
                 double rect_x1 = _vb_trans(rect->x, trans_x, view_w);
@@ -219,7 +219,7 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
                 break;
             }
             case OBJECT_TYPE_CIRCLE: {
-                struct _object_circle* circle = &object->value.circle;
+                const struct _object_circle* circle = &object->value.circle;
 
                 // translate into view box frame
                 double circ_x = _vb_trans(circle->x, trans_x, view_w);
@@ -236,8 +236,8 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
                 // convert to pixels
                 uint32_t x = _frame_scale(circ_x, view_w, frame->width);
                 uint32_t y = _frame_scale(circ_y, view_h, frame->height);
-                uint32_t radius =
-                    _frame_scale(circle->radius, view_w, frame->width);
+                uint32_t radius = _frame_scale(circle->radius, view_w,
+                    frame->width);
 
                 // draw the circle
                 frame_draw_circle(frame, x, y, radius, object->color);

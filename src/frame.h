@@ -26,7 +26,7 @@ struct frame {
  * @param color The color of the line.
  */
 void frame_draw_line(struct frame* frame, uint32_t x1, uint32_t y1, uint32_t x2,
-                     uint32_t y2, uint32_t color);
+    uint32_t y2, uint32_t color);
 
 /**
  * @brief Draws a rectangle on the frame.
@@ -39,7 +39,7 @@ void frame_draw_line(struct frame* frame, uint32_t x1, uint32_t y1, uint32_t x2,
  * @param color The color of the rectangle.
  */
 void frame_draw_rect(struct frame* frame, uint32_t x1, uint32_t y1, uint32_t x2,
-                     uint32_t y2, uint32_t color);
+    uint32_t y2, uint32_t color);
 
 /**
  * @brief Draws a circle on the frame.
@@ -50,4 +50,4 @@ void frame_draw_rect(struct frame* frame, uint32_t x1, uint32_t y1, uint32_t x2,
  * @param color The color of the circle.
  */
 void frame_draw_circle(struct frame* frame, uint32_t x, uint32_t y,
-                       uint32_t radius, uint32_t color);
+    uint32_t radius, uint32_t color);

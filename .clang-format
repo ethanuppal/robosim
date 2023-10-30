@@ -1,3 +1,6 @@
+# ethan's clang format
+# actually codes in my style LOL
+# well somewhat
 ---
 BasedOnStyle: Google
 IndentWidth: 4
@@ -8,7 +11,11 @@ BreakStringLiterals: true
 ReflowComments: true
 ContinuationIndentWidth: 4
 ColumnLimit: 80
+AlignAfterOpenBracket: DontAlign
 AlignTrailingComments:
     Kind: Always
     OverEmptyLines: 2
+AlignOperands: Align
+PenaltyBreakAssignment: 50
+PenaltyBreakOpenParenthesis: 50
 ---

@@ -102,7 +102,7 @@ void scene_destroy(struct scene* scene);
  * @return The new object or NULL on error.
  */
 struct object* scene_add_line(struct scene* scene, double x1, double y1,
-                              double x2, double y2);
+    double x2, double y2);
 
 /**
  * @brief Adds a rectangle to the scene.
@@ -114,7 +114,7 @@ struct object* scene_add_line(struct scene* scene, double x1, double y1,
  * @return The new object or NULL on error.
  */
 struct object* scene_add_rect(struct scene* scene, double x, double y, double w,
-                              double h);
+    double h);
 
 /**
  * @brief Adds a circle to the scene.
@@ -125,7 +125,7 @@ struct object* scene_add_rect(struct scene* scene, double x, double y, double w,
  * @return The new object or NULL on error.
  */
 struct object* scene_add_circle(struct scene* scene, double x, double y,
-                                double r);
+    double r);
 
 /**
  * @brief Removes an object from the scene.
@@ -148,4 +148,4 @@ bool scene_remove_object(struct scene* scene, struct object* object);
  * @pre `view_w` and `view_h` are greater than 0.
  */
 void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
-                double trans_y, double view_w, double view_h);
+    double trans_y, double view_w, double view_h);

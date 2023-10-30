@@ -11,6 +11,7 @@
 #define WINDOW_TITLE "Robot Simulator"
 
 static struct frame ctx = {.width = 800, .height = 600, .buffer = NULL};
+static struct scene* scene;
 
 // resize callback
 void resize(struct mfb_window* window, int width, int height) {
@@ -21,8 +22,8 @@ void resize(struct mfb_window* window, int width, int height) {
 
 int main() {
     // create window
-    struct mfb_window* window =
-        mfb_open_ex(WINDOW_TITLE, ctx.width, ctx.height, WF_RESIZABLE);
+    struct mfb_window* window = mfb_open_ex(WINDOW_TITLE, ctx.width, ctx.height,
+        WF_RESIZABLE);
     if (!window) {
         fprintf(stderr, "Failed to open window\n");
         return 1;
@@ -33,19 +34,20 @@ int main() {
     mfb_set_resize_callback(window, resize);
 
     // create the scene
-    struct scene* scene = scene_create();
+    scene = scene_create();
     if (!scene) {
         fprintf(stderr, "Failed to create scene\n");
         return 1;
     }
 
     // add stuff to scene
-    // scene_add_rect(scene, -25, -25, 50, 50);
+    scene_add_rect(scene, -25, -25, 50, 50);
 
     // main loop
     mfb_update_state state;
     do {
-        scene_draw(scene, &ctx, 0, 0, ctx.width, ctx.height);
+        scene_draw(scene, &ctx, -scene->robot.x, -scene->robot.y, ctx.width,
+            ctx.height);
 
         state = mfb_update_ex(window, ctx.buffer, ctx.width, ctx.height);
         if (state != STATE_OK) {

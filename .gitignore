@@ -1,0 +1,9 @@
+# .gitignore file
+*._DS_Store
+dependencies/
+CMakeFiles/
+**/CMakeFiles/
+Makefile
+robotsim
+cmake_install.cmake
+CMakeCache.txt

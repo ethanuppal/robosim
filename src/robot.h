@@ -30,3 +30,11 @@ struct robot {
  */
 void robot_init(struct robot* robot, double x, double y, double vx, double vy,
     double ax, double ay, double radius);
+
+/**
+ * @brief Copies a robot.
+ * @param dest The destination robot.
+ * @param src The source robot.
+ * @pre `dest` and `src` are not NULL.
+ */
+void robot_copy(struct robot* dest, const struct robot* src);

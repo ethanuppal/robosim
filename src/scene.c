@@ -5,10 +5,21 @@
 #include <stdlib.h>  // malloc, realloc
 
 #include "MiniFB.h"  // RGB
+#include "collide.h"
 #include "robot.h"
+
+// well, in case you didn't think this was thread-unsafe already...
+static struct object robot_circle_hack;
 
 #define min(x, y) ((x) < (y) ? (x) : (y))
 #define max(x, y) ((x) > (y) ? (x) : (y))
+
+static inline void _init_robot_circle_hack(const struct scene* scene) {
+    robot_circle_hack.type = OBJECT_TYPE_CIRCLE;
+    robot_circle_hack.value.circle.x = scene->robot.x;
+    robot_circle_hack.value.circle.y = scene->robot.y;
+    robot_circle_hack.value.circle.radius = scene->robot.radius;
+}
 
 struct scene* scene_create() {
     struct scene* scene = malloc(sizeof(*scene));
@@ -25,8 +36,8 @@ struct scene* scene_create() {
         return NULL;
     }
 
-    // place the robot at the origin
-    robot_init(&scene->robot, 0, 0, 10, 0, 0, 0);
+    // place the robot at the origin of radius 10
+    robot_init(&scene->robot, 0, 0, 0, 0, 0, 0, 10);
 
     // default fill color is white
     scene->color = MFB_RGB(255, 255, 255);
@@ -170,11 +181,7 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
     // draw the objects in the scene
 
     // (robot circle hack to avoid code duplicating the circle draw code)
-    struct object robot_circle_hack;
-    robot_circle_hack.type = OBJECT_TYPE_CIRCLE;
-    robot_circle_hack.value.circle.x = scene->robot.x;
-    robot_circle_hack.value.circle.y = scene->robot.y;
-    robot_circle_hack.value.circle.radius = scene->robot.radius;
+    _init_robot_circle_hack(scene);
     robot_circle_hack.color = MFB_RGB(255, 0, 0);
 
     for (size_t i = 0; i <= scene->object_count; i++) {
@@ -248,4 +255,15 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
 
 struct robot* scene_get_robot(struct scene* scene) {
     return &scene->robot;
+}
+
+struct object* scene_check_robot_collision(struct scene* scene) {
+    _init_robot_circle_hack(scene);
+    for (size_t i = 0; i < scene->object_count; ++i) {
+        struct object* object = scene->objects[i];
+        if (objects_collide(&robot_circle_hack, object)) {
+            return object;
+        }
+    }
+    return NULL;
 }

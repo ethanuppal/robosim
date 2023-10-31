@@ -2,12 +2,16 @@
 
 #include "robot.h"
 
-void robot_init(struct robot* robot, double x, double y, double radius,
-    double velocity, double accel, double heading) {
+void robot_init(struct robot* robot, double x, double y, double vx, double vy,
+    double ax, double ay, double radius) {
     robot->x = x;
     robot->y = y;
+    robot->vx = vx;
+    robot->vy = vy;
+    robot->ax = ax;
+    robot->ay = ay;
     robot->radius = radius;
-    robot->velocity = velocity;
-    robot->accel = accel;
-    robot->heading = heading;
+    robot->cov.cov_xx = 0;
+    robot->cov.cov_xy = 0;
+    robot->cov.cov_yy = 0;
 }

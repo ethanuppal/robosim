@@ -30,10 +30,10 @@ static bool _rect_circle_collide(struct _object_rect* a,
     }
 
     // 2. check if distance (horizontal or vertical) to closest side is < R
-    double dist_to_left = b->x - a->x;
-    double dist_to_right = b->x - (a->x + a->w);
-    double dist_to_top = b->y - a->y;
-    double dist_to_bottom = b->y - a->y - a->h;
+    double dist_to_left = fabs(b->x - a->x);
+    double dist_to_right = fabs(b->x - (a->x + a->w));
+    double dist_to_top = fabs(b->y - a->y);
+    double dist_to_bottom = fabs(b->y - a->y - a->h);
     if (b->x <= a->x) {
         // circle is to the left of the rect
         // check distance to left side
@@ -57,7 +57,7 @@ static bool _rect_circle_collide(struct _object_rect* a,
             return true;
         }
         // check distance to top right corner
-        if (dist_to_right * dist_to_right + dist_to_right * dist_to_right
+        if (dist_to_right * dist_to_right + dist_to_top * dist_to_top
             < b->radius * b->radius) {
             return true;
         }
@@ -68,8 +68,7 @@ static bool _rect_circle_collide(struct _object_rect* a,
         }
     } else {
         // circle is in the middle of the rect
-        return fabs(dist_to_top) <= b->radius
-               || fabs(dist_to_bottom) <= b->radius;
+        return dist_to_top <= b->radius || dist_to_bottom <= b->radius;
     }
 
     return false;

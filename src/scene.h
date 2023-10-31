@@ -20,20 +20,20 @@ struct object {
 
     union {
         struct _object_line {
-            double x1;      ///< The x coordinate of the first point.
-            double y1;      ///< The y coordinate of the first point.
-            double x2;      ///< The x coordinate of the second point.
-            double y2;      ///< The y coordinate of the second point.
+            double x1;      ///< The x-coordinate of the first point.
+            double y1;      ///< The y-coordinate of the first point.
+            double x2;      ///< The x-coordinate of the second point.
+            double y2;      ///< The y-coordinate of the second point.
         } line;
         struct _object_rect {
-            double x;       ///< The x coordinate of the top left corner.
-            double y;       ///< The y coordinate of the top left corner.
+            double x;       ///< The x-coordinate of the top left corner.
+            double y;       ///< The y-coordinate of the top left corner.
             double w;       ///< The width of the rectangle.
             double h;       ///< The height of the rectangle.
         } rect;
         struct _object_circle {
-            double x;       ///< The x coordinate of the center.
-            double y;       ///< The y coordinate of the center.
+            double x;       ///< The x-coordinate of the center.
+            double y;       ///< The y-coordinate of the center.
             double radius;  ///< The radius of the circle.
         } circle;
     } value;                ///< The geometric data of the object.
@@ -87,10 +87,10 @@ void scene_destroy(struct scene* scene);
 /**
  * @brief Adds a line segment to the scene.
  * @param scene The scene to add the line to.
- * @param x1 The x coordinate of the first point.
- * @param y1 The y coordinate of the first point.
- * @param x2 The x coordinate of the second point.
- * @param y2 The y coordinate of the second point.
+ * @param x1 The x-coordinate of the first point.
+ * @param y1 The y-coordinate of the first point.
+ * @param x2 The x-coordinate of the second point.
+ * @param y2 The y-coordinate of the second point.
  * @return The new object or NULL on error.
  */
 struct object* scene_add_line(struct scene* scene, double x1, double y1,
@@ -99,8 +99,8 @@ struct object* scene_add_line(struct scene* scene, double x1, double y1,
 /**
  * @brief Adds a rectangle to the scene.
  * @param scene The scene to add the rectangle to.
- * @param x The x coordinate of the top left corner.
- * @param y The y coordinate of the top left corner.
+ * @param x The x-coordinate of the top left corner.
+ * @param y The y-coordinate of the top left corner.
  * @param w The width of the rectangle.
  * @param h The height of the rectangle.
  * @return The new object or NULL on error.
@@ -111,8 +111,8 @@ struct object* scene_add_rect(struct scene* scene, double x, double y, double w,
 /**
  * @brief Adds a circle to the scene.
  * @param scene The scene to add the circle to.
- * @param x The x coordinate of the center.
- * @param y The y coordinate of the center.
+ * @param x The x-coordinate of the center.
+ * @param y The y-coordinate of the center.
  * @param r The radius of the circle.
  * @return The new object or NULL on error.
  */
@@ -149,3 +149,10 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
  * @return The robot in the scene.
  */
 struct robot* scene_get_robot(struct scene* scene);
+
+/**
+ * @brief Checks if the robot is colliding with any objects in the scene.
+ * @param scene The scene to check.
+ * @return The object the robot is colliding with, or NULL if it is not.
+ */
+struct object* scene_check_robot_collision(struct scene* scene);

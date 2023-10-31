@@ -5,6 +5,7 @@
 #include <stdlib.h>  // malloc, realloc
 
 #include "MiniFB.h"  // RGB
+#include "robot.h"
 
 #define min(x, y) ((x) < (y) ? (x) : (y))
 #define max(x, y) ((x) > (y) ? (x) : (y))
@@ -25,9 +26,7 @@ struct scene* scene_create() {
     }
 
     // place the robot at the origin
-    scene->robot.x = 0;
-    scene->robot.y = 0;
-    scene->robot.heading = 0;
+    robot_init(&scene->robot, 0, 0, 10, 0, 0, 0);
 
     // default fill color is white
     scene->color = MFB_RGB(255, 255, 255);
@@ -175,7 +174,7 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
     robot_circle_hack.type = OBJECT_TYPE_CIRCLE;
     robot_circle_hack.value.circle.x = scene->robot.x;
     robot_circle_hack.value.circle.y = scene->robot.y;
-    robot_circle_hack.value.circle.radius = 10;
+    robot_circle_hack.value.circle.radius = scene->robot.radius;
     robot_circle_hack.color = MFB_RGB(255, 0, 0);
 
     for (size_t i = 0; i <= scene->object_count; i++) {
@@ -226,10 +225,9 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
                 double circ_y = _vb_trans(circle->y, trans_y, view_h);
 
                 // check if cut off (thankfully dimension gets bounded for us)
-                if (circ_x + circle->radius < 0 ||
-                    circ_y + circle->radius < 0 ||
-                    circ_x - circle->radius > view_w ||
-                    circ_y - circle->radius > view_h) {
+                if (circ_x + circle->radius < 0 || circ_y + circle->radius < 0
+                    || circ_x - circle->radius > view_w
+                    || circ_y - circle->radius > view_h) {
                     continue;
                 }
 
@@ -246,4 +244,8 @@ void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
             }
         }
     }
+}
+
+struct robot* scene_get_robot(struct scene* scene) {
+    return &scene->robot;
 }

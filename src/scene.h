@@ -6,6 +6,7 @@
 #include <stddef.h>   // size_t
 
 #include "frame.h"
+#include "robot.h"
 
 /**
  * @brief An object in the scene.
@@ -38,15 +39,6 @@ struct object {
     } value;                ///< The geometric data of the object.
 
     uint32_t color;         ///< The fill color of the object.
-};
-
-/**
- * @brief A robot represented by a point in space with heading.
- */
-struct robot {
-    double x;        ///< The x coordinate of the robot.
-    double y;        ///< The y coordinate of the robot.
-    double heading;  ///< The heading of the robot.
 };
 
 /**
@@ -149,3 +141,11 @@ bool scene_remove_object(struct scene* scene, struct object* object);
  */
 void scene_draw(struct scene* scene, struct frame* frame, double trans_x,
     double trans_y, double view_w, double view_h);
+
+/**
+ * @brief Retrieves a handle for the robot in the scene.
+ * Only valid for as long as the scene is in memory.
+ * @param scene The scene to get the robot from.
+ * @return The robot in the scene.
+ */
+struct robot* scene_get_robot(struct scene* scene);

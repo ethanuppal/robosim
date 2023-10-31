@@ -16,6 +16,14 @@ AlignTrailingComments:
     Kind: Always
     OverEmptyLines: 2
 AlignOperands: Align
+BreakBeforeBinaryOperators: NonAssignment
 PenaltyBreakAssignment: 50
 PenaltyBreakOpenParenthesis: 50
+IndentCaseLabels: true
+AllowShortFunctionsOnASingleLine: None
+IncludeCategories:
+  - Regex:           '<[[:alnum:].]+>'
+    Priority:        1
+  - Regex:           '.*'
+    Priority:        3
 ---

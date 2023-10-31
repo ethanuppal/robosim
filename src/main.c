@@ -5,8 +5,7 @@
 #include <stdlib.h>  // malloc, realloc
 
 #include "MiniFB.h"
-#include "frame.h"
-#include "scene.h"
+#include "robotsim.h"
 
 #define WINDOW_TITLE "Robot Simulator"
 
@@ -39,15 +38,22 @@ int main() {
         fprintf(stderr, "Failed to create scene\n");
         return 1;
     }
+    struct robot* robot = scene_get_robot(scene);
 
     // add stuff to scene
-    scene_add_rect(scene, -25, -25, 50, 50);
+    scene_add_rect(scene, -100, -100, 100, 25);
+    scene_add_rect(scene, -100, -100, 25, 100);
+    scene_add_rect(scene, 75, -100, 25, 100);
+    scene_add_rect(scene, -100, 75, 100, 25);
+    scene_add_rect(scene, -175, -175, 350, 25);
+    scene_add_rect(scene, -175, 150, 350, 25);
+    scene_add_rect(scene, -175, -150, 25, 300);
+    scene_add_rect(scene, 150, -150, 25, 300);
 
     // main loop
     mfb_update_state state;
     do {
-        scene_draw(scene, &ctx, -scene->robot.x, -scene->robot.y, ctx.width,
-            ctx.height);
+        scene_draw(scene, &ctx, -robot->x, -robot->y, ctx.width, ctx.height);
 
         state = mfb_update_ex(window, ctx.buffer, ctx.width, ctx.height);
         if (state != STATE_OK) {
@@ -60,6 +66,7 @@ int main() {
 
     // handle exit state
     switch (state) {
+        case STATE_OK:
         case STATE_EXIT:
             return 0;  // exit early on success
         case STATE_INVALID_WINDOW:
@@ -71,7 +78,7 @@ int main() {
         case STATE_INTERNAL_ERROR:
             fprintf(stderr, "Internal error\n");
         default:
-            fprintf(stderr, "Unknown error\n");
+            fprintf(stderr, "Unknown error: %d\n", state);
             break;
     }
     return 1;

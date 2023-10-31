@@ -18,6 +18,8 @@ struct robot kalman_predict(struct robot robot, double dt,
     return robot;
 }
 
+// these equations literally stolen fromm
+// https://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/#mjx-eqn-matrixupdate
 struct robot kalman_update(struct robot robot, struct robot sensor_result,
     struct covariance sensor_noise) {
     double kalman_gain_x = robot.cov.cov_xx
@@ -29,6 +31,11 @@ struct robot kalman_update(struct robot robot, struct robot sensor_result,
     robot.y = robot.y + kalman_gain_y * (sensor_result.y - robot.y);
     robot.vx = robot.vx + kalman_gain_x * (sensor_result.vx - robot.vx);
     robot.vy = robot.vy + kalman_gain_y * (sensor_result.vy - robot.vy);
+
+    // update covariance matrix for the new state
+    robot.cov.cov_xx = (1 - kalman_gain_x) * robot.cov.cov_xx;
+    robot.cov.cov_xy = (1 - kalman_gain_x) * robot.cov.cov_xy;
+    robot.cov.cov_yy = (1 - kalman_gain_y) * robot.cov.cov_yy;
 
     return robot;
 }

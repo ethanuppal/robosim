@@ -29,10 +29,10 @@ static void robot_move(struct robot* robot, struct scene* scene, double dt) {
     }
 
     predicted_robot = kalman_predict(predicted_robot, dt,
-        (struct covariance){0.1, 0, 0.1});
+        (struct covariance){0.1, 0, 0.1} /* external noise */);
     if (iters > 300) {
         predicted_robot = kalman_update(predicted_robot, *robot,
-            (struct covariance){0.1, 0, 0.1});
+            (struct covariance){0.1, 0, 0.1} /* sensor noise */);
         printf("updated\n");
         iters = 0;
     }

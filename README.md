@@ -9,3 +9,4 @@ cmake . -DCMAKE_BUILD_TYPE=Release \
 && make robosim \
 && ./robosim
 ```
+don't forget to `cd dependencies/minifb` and do the `git submodule` jazz :)
